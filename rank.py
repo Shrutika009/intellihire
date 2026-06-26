@@ -82,17 +82,21 @@ HARD_REQUIREMENTS = {
 # FEATURE ENGINEERING FUNCTIONS
 # ============================================================================
 
-def compute_semantic_similarity(candidate, jd_embedding, model):
+def compute_semantic_similarity(candidate, jd_embedding, model, precomputed_embedding=None):
     """Compute embedding-based semantic similarity to JD."""
     try:
-        narrative = candidate['profile']['summary'] + ' '
-        for role in candidate['career_history']:
-            narrative += role['description'] + ' '
+        if precomputed_embedding is not None:
+            cand_embedding = precomputed_embedding
+        else:
+            narrative = candidate['profile']['summary'] + ' '
+            for role in candidate['career_history']:
+                narrative += role['description'] + ' '
+            
+            if not narrative.strip():
+                return 0.3
+            
+            cand_embedding = model.encode(narrative, convert_to_tensor=False)
         
-        if not narrative.strip():
-            return 0.3
-        
-        cand_embedding = model.encode(narrative, convert_to_tensor=False)
         similarity = float(np.dot(jd_embedding, cand_embedding) / 
                           (np.linalg.norm(jd_embedding) * np.linalg.norm(cand_embedding) + 1e-8))
         normalized = (similarity + 1) / 2
@@ -317,10 +321,10 @@ def trust_score(candidate):
     return float(min(score, 1.0))
 
 
-def compute_candidate_score(candidate, jd_embedding, model):
+def compute_candidate_score(candidate, jd_embedding, model, precomputed_embedding=None):
     """Compute final ranking score for a candidate."""
     try:
-        semantic_sim = compute_semantic_similarity(candidate, jd_embedding, model)
+        semantic_sim = compute_semantic_similarity(candidate, jd_embedding, model, precomputed_embedding)
         skill_match = compute_skill_match(candidate)
         exp_score = experience_score(candidate)
         production = production_proof_score(candidate)
@@ -408,14 +412,28 @@ def generate_reasoning(candidate, rank):
 # ============================================================================
 
 def load_candidates(filepath):
-    """Load candidates from JSONL file."""
+    """Load candidates from JSONL or JSON array file."""
     candidates = []
-    with open(filepath, 'r') as f:
-        for line in f:
+    with open(filepath, 'r', encoding='utf-8') as f:
+        first_char = f.read(1)
+        f.seek(0)
+        if first_char == '[':
             try:
-                candidates.append(json.loads(line))
+                candidates = json.load(f)
             except json.JSONDecodeError:
-                continue
+                f.seek(0)
+                # Fallback to line-by-line in case it's a large weird format
+                for line in f:
+                    try:
+                        candidates.append(json.loads(line))
+                    except json.JSONDecodeError:
+                        continue
+        else:
+            for line in f:
+                try:
+                    candidates.append(json.loads(line))
+                except json.JSONDecodeError:
+                    continue
     return candidates
 
 
@@ -433,27 +451,102 @@ def rank_candidates(candidates_file, output_file):
     
     # Initialize model
     print("[2/5] Initializing Sentence Transformers model...")
+    import torch
+    torch.set_num_threads(4)  # Prevent CPU thread thrashing
     model = SentenceTransformer('multi-qa-mpnet-base-dot-v1')
     jd_embedding = model.encode(JD_TEXT, convert_to_tensor=False)
     print(f"  ✓ Model ready. Embedding dimension: {len(jd_embedding)}")
     
-    # Compute scores
-    print("[3/5] Computing ranking scores...")
-    scores = []
+    # Stage 1: Preliminary scoring without embeddings
+    print("[3/5] Stage 1: Scoring candidates on explicit & behavioral signals...")
+    preliminary_candidates = []
     for i, candidate in enumerate(candidates):
         if (i + 1) % 20000 == 0:
             print(f"  ... processed {i + 1}/{len(candidates)}")
+            
+        skill_match = compute_skill_match(candidate)
+        exp_score = experience_score(candidate)
+        production = production_proof_score(candidate)
+        progression = career_progression_score(candidate)
+        availability = availability_score(candidate)
+        trust = trust_score(candidate)
+        inflation_mult = detect_keyword_inflation(candidate)
         
-        score = compute_candidate_score(candidate, jd_embedding, model)
-        scores.append({           'candidate_id': candidate['candidate_id'],
-            'score': score,
+        experience_composite = (exp_score * 0.4) + (production * 0.4) + (progression * 0.2)
+        
+        # Simple weighted score of non-embedding features
+        prelim_score = (
+            (0.40 * skill_match) +
+            (0.35 * experience_composite) +
+            (0.20 * availability) +
+            (0.05 * trust)
+        ) * inflation_mult
+        
+        preliminary_candidates.append({
+            'candidate': candidate,
+            'prelim_score': prelim_score,
+            'skill_match': skill_match,
+            'experience_composite': experience_composite,
+            'availability': availability,
+            'trust': trust,
+            'inflation_mult': inflation_mult
+        })
+    
+    # Sort and pick top 2,000 for Stage 2 Re-ranking
+    preliminary_candidates.sort(key=lambda x: -x['prelim_score'])
+    top_candidates = preliminary_candidates[:2000]
+    print(f"  ✓ Retained top 2,000 candidates for semantic re-ranking")
+    
+    # Stage 2: Batch-encode narratives for top candidates only
+    print("  ... constructing optimized narratives for top 2,000 candidates ...")
+    narratives = []
+    for item in top_candidates:
+        candidate = item['candidate']
+        summary = candidate['profile'].get('summary', '') or ''
+        roles = candidate.get('career_history', [])
+        # Only take the 2 most recent roles to focus on modern experience and save CPU
+        recent_roles_desc = ' '.join([role.get('description', '') or '' for role in roles[:2]])
+        
+        narrative = f"{summary} {recent_roles_desc}".strip()
+        # Truncate to 1000 chars (~200 tokens) - fits well within the model's max limit of 512 tokens
+        narrative = narrative[:1000]
+        if not narrative:
+            narrative = " "
+        narratives.append(narrative)
+        
+    print("  ... encoding narratives in batch (top 2,000 candidates) ...")
+    cand_embeddings = model.encode(narratives, batch_size=64, show_progress_bar=True, convert_to_numpy=True)
+    
+    # Compute final combined scores for the top candidates
+    print("[4/5] Re-ranking and selecting top-100 candidates...")
+    final_scores = []
+    for i, item in enumerate(top_candidates):
+        candidate = item['candidate']
+        
+        # Compute semantic similarity
+        cand_embedding = cand_embeddings[i]
+        similarity = float(np.dot(jd_embedding, cand_embedding) / 
+                          (np.linalg.norm(jd_embedding) * np.linalg.norm(cand_embedding) + 1e-8))
+        normalized = (similarity + 1) / 2
+        semantic_sim = float(np.clip(normalized, 0, 1))
+        
+        # Combine all features with standard weights
+        final_score = (
+            (0.40 * semantic_sim) +
+            (0.25 * item['skill_match']) +
+            (0.18 * item['experience_composite']) +
+            (0.12 * item['availability']) +
+            (0.05 * item['trust'])
+        ) * item['inflation_mult']
+        
+        final_scores.append({
+            'candidate_id': candidate['candidate_id'],
+            'score': float(np.clip(final_score, 0, 1)),
             'candidate': candidate
         })
-    print(f"  ✓ Computed scores for all {len(scores)} candidates")
-    
-    # Sort and select top-100
-    print("[4/5] Ranking top-100 candidates...")
-    scores_sorted = sorted(scores, key=lambda x: -x['score'])
+        
+    # Sort by final score descending and select top 100
+    scores_sorted = sorted(final_scores, key=lambda x: -x['score'])
     top_100 = scores_sorted[:100]
     print(f"  ✓ Top score: {top_100[0]['score']:.4f}")
     print(f"  ✓ 100th score: {top_100[99]['score']:.4f}")

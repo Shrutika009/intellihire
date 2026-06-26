@@ -1,0 +1,101 @@
+candidate_id,rank,score,reasoning
+CAND_0060054,1,0.8156582423973082,6.4yr ai engineer at Mad Street Den; responsive to recruiters (86%); available in 15d
+CAND_0020374,2,0.7986916160964965,8.0yr full stack developer at Zomato
+CAND_0073439,3,0.786657022895813,6.3yr frontend engineer at Razorpay; responsive to recruiters (76%); active GitHub contributor; 120d notice
+CAND_0061827,4,0.7727908328056337,6.3yr frontend engineer at Tech Mahindra; responsive to recruiters (80%); 120d notice
+CAND_0068199,5,0.7552747156906128,6.9yr qa engineer at Acme Corp
+CAND_0050533,6,0.7498694151878357,8.4yr devops engineer at Pied Piper; 120d notice
+CAND_0043491,7,0.7426141826057433,6.9yr full stack developer at Razorpay; recently active
+CAND_0060113,8,0.7424579686546325,8.8yr devops engineer at Swiggy; responsive to recruiters (78%)
+CAND_0022312,9,0.7399486662864686,7.1yr qa engineer at TCS
+CAND_0008059,10,0.7390997486114502,6.5yr cloud engineer at Initech; responsive to recruiters (77%); 120d notice
+CAND_0007116,11,0.7364564661026001,6.8yr qa engineer at TCS; responsive to recruiters (71%); active GitHub contributor
+CAND_0038002,12,0.7325769026184082,7.6yr devops engineer at Stark Industries
+CAND_0059945,13,0.7324661470413207,5.8yr full stack developer at Pied Piper; 120d notice
+CAND_0048436,14,0.7296474852943421,9.4yr qa engineer at Razorpay
+CAND_0053217,15,0.7286310083389282,"5.7yr .net developer at Wayne Enterprises; based in Delhi, Delhi"
+CAND_0053824,16,0.7270261845970154,6.2yr software engineer at Hooli; 150d notice
+CAND_0064787,17,0.7264198019027709,5.8yr .net developer at Pied Piper
+CAND_0001878,18,0.7261736614227295,"6.4yr devops engineer at Wayne Enterprises; based in Noida, Uttar Pradesh"
+CAND_0078645,19,0.7256162624168396,4.0yr devops engineer at Dunder Mifflin; responsive to recruiters (82%); 150d notice
+CAND_0049612,20,0.7255813536643982,8.6yr mobile developer at Accenture; 120d notice
+CAND_0039348,21,0.7249743306922912,"9.6yr frontend engineer at Globex Inc; based in Noida, Uttar Pradesh"
+CAND_0083443,22,0.7245709807777404,9.3yr mobile developer at Razorpay; responsive to recruiters (70%)
+CAND_0064884,23,0.7238138837623596,6.8yr full stack developer at Acme Corp; inactive 6+ months
+CAND_0082242,24,0.7221273887634277,7.1yr mobile developer at Flipkart
+CAND_0090877,25,0.7219579286575318,5.5yr .net developer at Wipro; 120d notice
+CAND_0051422,26,0.721730835723877,8.9yr devops engineer at Cognizant; responsive to recruiters (76%); 120d notice
+CAND_0076641,27,0.7210848770141601,6.6yr full stack developer at HCL; 120d notice
+CAND_0001637,28,0.7209769026184082,"7.6yr full stack developer at Swiggy; based in Noida, Uttar Pradesh; low recruiter engagement"
+CAND_0024760,29,0.7205567745590211,4.7yr devops engineer at Zomato; recently active
+CAND_0094894,30,0.7200498957061767,8.8yr cloud engineer at Hooli
+CAND_0005253,31,0.7195292675971986,7.1yr full stack developer at HCL; 120d notice
+CAND_0086473,32,0.7193887544059753,8.3yr java developer at Hooli; active GitHub contributor; 150d notice
+CAND_0066760,33,0.7176754534721375,8.9yr mobile developer at Accenture; low recruiter engagement
+CAND_0034673,34,0.7173096782684326,7.4yr .net developer at Cognizant; responsive to recruiters (75%); active GitHub contributor
+CAND_0027103,35,0.7170443181037902,9.5yr qa engineer at Flipkart
+CAND_0069019,36,0.7166860947608948,9.6yr frontend engineer at Initech
+CAND_0026581,37,0.7162051290512086,8.5yr java developer at Initech; 120d notice
+CAND_0078204,38,0.715783803882599,9.6yr frontend engineer at Stark Industries; active GitHub contributor
+CAND_0030973,39,0.7156698890113831,9.1yr cloud engineer at Stark Industries; low recruiter engagement
+CAND_0066639,40,0.7155974934577942,5.3yr java developer at Capgemini; responsive to recruiters (70%); active GitHub contributor; inactive 6+ months
+CAND_0049446,41,0.7151381062507629,"4.2yr software engineer at Mindtree; based in Noida, Uttar Pradesh; active GitHub contributor"
+CAND_0015790,42,0.7147986514472963,8.0yr cloud engineer at Zomato; low recruiter engagement
+CAND_0006002,43,0.7134616722106933,9.6yr qa engineer at Initech; recently active
+CAND_0092210,44,0.7133181000709534,5.6yr full stack developer at Initech
+CAND_0025977,45,0.7123402319335937,9.2yr full stack developer at CRED; responsive to recruiters (73%); inactive 6+ months
+CAND_0078479,46,0.7119434160614014,6.3yr qa engineer at CRED
+CAND_0018522,47,0.7119410662078858,7.8yr .net developer at Hooli
+CAND_0083696,48,0.7118099321365355,7.1yr qa engineer at Cognizant; responsive to recruiters (84%); active GitHub contributor
+CAND_0068849,49,0.7116710083389283,5.7yr .net developer at Razorpay; responsive to recruiters (83%)
+CAND_0044458,50,0.7111761949539185,7.2yr mobile developer at Pied Piper; responsive to recruiters (74%); active GitHub contributor
+CAND_0089659,51,0.7105081453323364,5.2yr frontend engineer at Pied Piper; responsive to recruiters (73%); 120d notice
+CAND_0018213,52,0.7100303052902222,9.4yr cloud engineer at HCL; responsive to recruiters (71%); 120d notice
+CAND_0083119,53,0.7096329306030273,4.1yr software engineer at CRED; responsive to recruiters (79%); active GitHub contributor
+CAND_0014774,54,0.7092097633361817,6.1yr cloud engineer at Wayne Enterprises; 120d notice
+CAND_0091434,55,0.7090751731872559,8.6yr frontend engineer at Wipro; 120d notice
+CAND_0095345,56,0.7073234594726563,9.3yr full stack developer at CRED; 150d notice
+CAND_0039020,57,0.7067574054718019,"7.1yr java developer at Pied Piper; based in Delhi, Delhi"
+CAND_0006337,58,0.7066733193206787,8.4yr qa engineer at Acme Corp; inactive 6+ months
+CAND_0042149,59,0.7060422917747499,7.5yr devops engineer at Razorpay; inactive 6+ months
+CAND_0060742,60,0.7049824145317078,7.1yr devops engineer at HCL; responsive to recruiters (75%); active GitHub contributor; 120d notice
+CAND_0072529,61,0.7049167209625244,7.9yr qa engineer at HCL
+CAND_0067910,62,0.7039422434806825,9.9yr mobile developer at Accenture; low recruiter engagement
+CAND_0022473,63,0.7034099337005616,6.6yr full stack developer at Razorpay; responsive to recruiters (81%); 150d notice
+CAND_0068677,64,0.7027553322601319,6.9yr devops engineer at Globex Inc; responsive to recruiters (70%)
+CAND_0040093,65,0.7025931280899048,8.3yr devops engineer at Dunder Mifflin; 150d notice
+CAND_0006136,66,0.7023250789642334,6.5yr java developer at Cognizant; active GitHub contributor; 120d notice
+CAND_0074141,67,0.7017738365554811,8.7yr qa engineer at Swiggy
+CAND_0015203,68,0.7007505589485168,5.3yr devops engineer at Mindtree
+CAND_0017596,69,0.7006141088485718,4.8yr devops engineer at TCS
+CAND_0045084,70,0.6992821838378905,9.0yr frontend engineer at Capgemini
+CAND_0086392,71,0.6990448626899719,6.2yr cloud engineer at Hooli; low recruiter engagement
+CAND_0040783,72,0.6987850666999817,4.8yr frontend engineer at Cognizant; active GitHub contributor
+CAND_0098419,73,0.6985081453323364,"5.2yr java developer at Capgemini; based in Noida, Uttar Pradesh; responsive to recruiters (76%); 150d notice"
+CAND_0075187,74,0.6977418077468872,7.7yr .net developer at Wayne Enterprises
+CAND_0068809,75,0.6971823056602479,8.4yr software engineer at Hooli; some AI/ML skills (2)
+CAND_0070984,76,0.6962135670661926,8.3yr cloud engineer at TCS
+CAND_0092354,77,0.6957840162277221,6.7yr full stack developer at Infosys; some AI/ML skills (2); responsive to recruiters (71%)
+CAND_0006786,78,0.6953773949050903,3.8yr java developer at Hooli; 150d notice
+CAND_0014367,79,0.6948799352645874,8.5yr .net developer at HCL; active GitHub contributor; low recruiter engagement
+CAND_0020576,80,0.6944932088279724,9.2yr qa engineer at Zomato; inactive 6+ months
+CAND_0047996,81,0.6944585269355774,7.2yr .net developer at Razorpay; active GitHub contributor
+CAND_0079565,82,0.6942549315261841,7.8yr mobile developer at Dunder Mifflin; 150d notice
+CAND_0069566,83,0.6942080081939697,9.6yr .net developer at Mindtree; active GitHub contributor; inactive 6+ months
+CAND_0099726,84,0.693986655368805,9.7yr .net developer at Swiggy; 120d notice
+CAND_0006610,85,0.6935847309494019,5.5yr cloud engineer at CRED
+CAND_0043336,86,0.6931073036956787,7.6yr software engineer at Acme Corp; active GitHub contributor; 120d notice
+CAND_0066659,87,0.6929886611366273,5.2yr frontend engineer at Stark Industries; responsive to recruiters (74%); 120d notice
+CAND_0083481,88,0.6923885584831238,8.2yr java developer at Initech; active GitHub contributor
+CAND_0037495,89,0.6920245106697083,6.5yr devops engineer at Accenture; responsive to recruiters (75%); active GitHub contributor; 150d notice
+CAND_0020895,90,0.6920134555816649,4.7yr qa engineer at Tech Mahindra; inactive 6+ months
+CAND_0057015,91,0.6916584700393676,6.5yr frontend engineer at Globex Inc; active GitHub contributor; inactive 6+ months
+CAND_0061331,92,0.6912282557487488,6.7yr qa engineer at Cognizant
+CAND_0038693,93,0.6905374593734741,6.6yr qa engineer at Capgemini; 120d notice
+CAND_0010789,94,0.6901141610145569,6.4yr cloud engineer at Capgemini; inactive 6+ months
+CAND_0084393,95,0.6899654871940613,"9.2yr .net developer at Capgemini; based in Noida, Uttar Pradesh; responsive to recruiters (74%)"
+CAND_0003703,96,0.6890731310844421,9.0yr cloud engineer at Mphasis; 150d notice
+CAND_0055696,97,0.6887609354019165,"9.9yr full stack developer at Mindtree; based in Noida, Uttar Pradesh; 120d notice"
+CAND_0039001,98,0.6883836234092713,8.9yr devops engineer at Flipkart
+CAND_0092717,99,0.6881302949333191,5.5yr devops engineer at CRED
+CAND_0042703,100,0.6876422241210938,8.0yr .net developer at Flipkart; active GitHub contributor

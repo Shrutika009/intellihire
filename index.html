@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intellihire — Redrob Hackathon Solutions Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --card-border-hover: #4f46e5;
+            --primary: #4f46e5;
+            --primary-light: #e0e7ff;
+            --secondary: #6d28d9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent-green: #059669;
+            --accent-red: #dc2626;
+            --accent-amber: #d97706;
+            --accent-blue: #0284c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* LAYOUT STYLING */
+        .wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR NAV */
+        .sidebar {
+            width: 280px;
+            background: #ffffff;
+            border-right: 1px solid var(--card-border);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .brand h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .brand p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            border-radius: 10px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .nav-item.active {
+            font-weight: 600;
+        }
+
+        /* MAIN CONTENT AREA */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 2.5rem;
+            max-width: 1200px;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 1rem;
+        }
+
+        .section-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+        }
+
+        /* STATS & METRICS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #fff;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-main);
+        }
+
+        .stat-desc {
+            font-size: 0.75rem;
+            color: var(--primary);
+        }
+
+        /* TAB SECTIONS */
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* TABLE STYLING */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: #fff;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #f8fafc;
+            color: var(--text-muted);
+            font-weight: 600;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        td {
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ARCHITECTURE BLOCKS */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .info-card {
+            background: #fff;
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .info-card h3 {
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .weight-bar-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .weight-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .weight-name {
+            width: 160px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .weight-bar-bg {
+            flex: 1;
+            height: 12px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .weight-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 6px;
+        }
+
+        .weight-val {
+            width: 40px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* SEARCH & DISCOVERY TAB SPECIFICS */
+        .controls-wrapper {
+            background: #fff;
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 0.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            fill: var(--text-muted);
+            width: 16px;
+            height: 16px;
+        }
+
+        .skills-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-pill {
+            background: #f1f5f9;
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            padding: 0.35rem 0.85rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .skill-pill:hover, .skill-pill.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        .candidates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .cand-card {
+            background: #fff;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 230px;
+            transition: all 0.2s ease;
+        }
+
+        .cand-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+
+        .cand-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .rank-badge {
+            background: #f1f5f9;
+            color: var(--text-main);
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            border: 1px solid var(--card-border);
+        }
+
+        .score-circle {
+            background: #f8fafc;
+            border: 2px solid var(--primary);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .cand-title {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .cand-meta {
+            display: flex;
+            gap: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .reasoning-box {
+            background: #f8fafc;
+            border-left: 3px solid var(--primary);
+            padding: 0.5rem 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-main);
+            margin-bottom: 0.75rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+
+        .skill-tag {
+            background: #f1f5f9;
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+        }
+
+        /* BLUEPRINT REQUIREMENTS BLOCKS */
+        .req-box {
+            border-left: 4px solid var(--primary);
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .req-box.disqualifier {
+            border-left-color: var(--accent-red);
+        }
+
+        .req-box h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .req-box p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* DRAWER OVERLAY & PANEL */
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.3);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .drawer-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -600px;
+            width: 100%;
+            max-width: 600px;
+            height: 100vh;
+            background: #ffffff;
+            border-left: 1px solid var(--card-border);
+            box-shadow: -4px 0 24px rgba(0, 0, 0, 0.08);
+            z-index: 1001;
+            padding: 2rem;
+            overflow-y: auto;
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .drawer.active {
+            right: 0;
+        }
+
+        .drawer-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: #f1f5f9;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            color: var(--text-muted);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .drawer-close:hover {
+            background: #fee2e2;
+            color: var(--accent-red);
+        }
+
+        .drawer-section {
+            border-top: 1px solid var(--card-border);
+            padding: 1.25rem 0;
+            margin-top: 1rem;
+        }
+
+        .drawer-sec-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            position: relative;
+            padding-left: 1.25rem;
+            border-left: 2px solid var(--card-border);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.25rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: calc(-1.25rem - 5px);
+            top: 6px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 2px solid #ffffff;
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .timeline-title {
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .timeline-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* BEHAVIORAL GRID */
+        .signals-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .signal-box {
+            background: var(--bg-color);
+            border: 1px solid var(--card-border);
+            padding: 0.6rem 0.85rem;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .signal-lbl {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .signal-val {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="brand">
+            <h2>Redrob Hub</h2>
+            <p>Talent Intelligence Suite</p>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item active" onclick="switchTab('discovery', this)">🔍 Candidate Discovery</li>
+            <li class="nav-item" onclick="switchTab('evaluator', this)">⚡ Candidate Sandbox</li>
+            <li class="nav-item" onclick="switchTab('architecture', this)">🏗️ Scoring Pipeline</li>
+            <li class="nav-item" onclick="switchTab('insights', this)">📊 Dataset Analytics</li>
+            <li class="nav-item" onclick="switchTab('blueprint', this)">📋 Challenge Blueprint</li>
+        </ul>
+    </div>
+
+    <!-- MAIN MAIN-CONTENT -->
+    <div class="main-content">
+        
+        <!-- ==================== TAB: EVALUATOR ==================== -->
+        <div id="evaluator-panel" class="tab-panel">
+            <div class="section-header">
+                <h1>Candidate Sandbox Evaluator</h1>
+                <p>Input candidate profile information and test how the hybrid ranking system evaluates them on-the-fly.</p>
+            </div>
+
+            <div class="arch-grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <!-- Form Column -->
+                <div class="info-card">
+                    <h3 style="margin-bottom: 1.5rem;">Profile Parameters</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.25rem;">Candidate Name</label>
+                                <input type="text" id="sandbox-name" value="Jane Doe" style="width:100%; border:1px solid var(--card-border); padding:0.6rem; border-radius:8px;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.25rem;">Current Title</label>
+                                <input type="text" id="sandbox-title" value="Senior ML Engineer" style="width:100%; border:1px solid var(--card-border); padding:0.6rem; border-radius:8px;">
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.25rem;">Years of Experience</label>
+                                <input type="number" id="sandbox-yoe" value="6.5" step="0.5" style="width:100%; border:1px solid var(--card-border); padding:0.6rem; border-radius:8px;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.25rem;">Notice Period (Days)</label>
+                                <input type="number" id="sandbox-notice" value="30" style="width:100%; border:1px solid var(--card-border); padding:0.6rem; border-radius:8px;">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.25rem;">Skills (Comma-separated)</label>
+                            <input type="text" id="sandbox-skills" value="Python, Sentence Transformers, Pinecone, NDCG, Fine-tuning" style="width:100%; border:1px solid var(--card-border); padding:0.6rem; border-radius:8px;">
+                        </div>
+
+                        <div>
+                            <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.25rem;">Career Summary / Experience Narrative</label>
+                            <textarea id="sandbox-summary" rows="4" style="width:100%; border:1px solid var(--card-border); padding:0.6rem; border-radius:8px; font-family:inherit; font-size:0.9rem;">Experienced Software Engineer specialized in information retrieval. Shipped embeddings-based semantic search systems using sentence transformers. Designed vector databases on Pinecone and set up NDCG metrics for search ranking quality evaluation.</textarea>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.25rem;">Recruiter Response Rate (%)</label>
+                                <input type="number" id="sandbox-response" value="85" style="width:100%; border:1px solid var(--card-border); padding:0.6rem; border-radius:8px;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.25rem;">Last Active (Days Ago)</label>
+                                <input type="number" id="sandbox-active" value="10" style="width:100%; border:1px solid var(--card-border); padding:0.6rem; border-radius:8px;">
+                            </div>
+                        </div>
+
+                        <button onclick="evaluateSandboxCandidate()" style="background: var(--primary); color: #fff; border: none; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s;">Run Matching Evaluation</button>
+                    </div>
+                </div>
+
+                <!-- Results Column -->
+                <div class="info-card" id="sandbox-result-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <h3 style="margin-bottom: 1.5rem;">Matching Assessment</h3>
+                        
+                        <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+                            <div id="sandbox-score-circle" style="border: 4px solid var(--primary); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; font-weight: 700; font-family: 'Outfit'; color: var(--primary);">85%</div>
+                            <div>
+                                <h4 id="sandbox-verdict" style="font-size: 1.2rem; color: var(--accent-green); margin-bottom: 0.25rem;">Tier 1: Excellent Fit</h4>
+                                <p style="font-size: 0.8rem; color: var(--text-muted);">Matches all critical JD requirements</p>
+                            </div>
+                        </div>
+
+                        <div class="weight-bar-container" style="gap: 0.75rem;">
+                            <div class="weight-row">
+                                <span class="weight-name" style="width:140px;">Semantic Sim (40%)</span>
+                                <div class="weight-bar-bg"><div id="sandbox-bar-semantic" class="weight-bar-fill" style="width: 85%;"></div></div>
+                                <span id="sandbox-val-semantic" class="weight-val">85%</span>
+                            </div>
+                            <div class="weight-row">
+                                <span class="weight-name" style="width:140px;">Skill Match (25%)</span>
+                                <div class="weight-bar-bg"><div id="sandbox-bar-skill" class="weight-bar-fill" style="width: 90%; background: var(--secondary);"></div></div>
+                                <span id="sandbox-val-skill" class="weight-val">90%</span>
+                            </div>
+                            <div class="weight-row">
+                                <span class="weight-name" style="width:140px;">Experience (18%)</span>
+                                <div class="weight-bar-bg"><div id="sandbox-bar-exp" class="weight-bar-fill" style="width: 88%; background: var(--accent-blue);"></div></div>
+                                <span id="sandbox-val-exp" class="weight-val">88%</span>
+                            </div>
+                            <div class="weight-row">
+                                <span class="weight-name" style="width:140px;">Availability (12%)</span>
+                                <div class="weight-bar-bg"><div id="sandbox-bar-avail" class="weight-bar-fill" style="width: 92%; background: var(--accent-amber);"></div></div>
+                                <span id="sandbox-val-avail" class="weight-val">92%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; background: var(--bg-color); border-left: 4px solid var(--primary); padding: 1rem; border-radius: 0 8px 8px 0;">
+                        <h5 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem;">Recruiter Actionable Feedback:</h5>
+                        <p id="sandbox-feedback" style="font-size: 0.8rem; color: var(--text-muted);">This candidate has solid production engineering experience with vector embeddings and custom search metrics. High engagement signals and near-immediate availability make them a primary recommendation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB: DISCOVERY ==================== -->
+        <div id="discovery-panel" class="tab-panel active">
+            <div class="section-header">
+                <h1>Candidate Discovery</h1>
+                <p>Explore the top 100 best-fit candidates extracted via Two-Stage Hybrid Similarity.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-label">Total Pool Size</span>
+                    <span class="stat-value">100,000</span>
+                    <span class="stat-desc">Parsed from candidates.jsonl</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Top Ranked</span>
+                    <span class="stat-value">100</span>
+                    <span class="stat-desc">High-fidelity profiles</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Avg Experience</span>
+                    <span class="stat-value" id="avg-yoe">7.2 yrs</span>
+                    <span class="stat-desc">Optimal 5-9yr target band</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Recruiter Response</span>
+                    <span class="stat-value" id="avg-response">82%</span>
+                    <span class="stat-desc">Top active engagement</span>
+                </div>
+            </div>
+
+            <div class="controls-wrapper">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                    <input type="text" id="search-input" placeholder="Search name, title, current company, or skills...">
+                </div>
+                <div class="skills-pills" id="skills-pills">
+                    <span class="skill-pill active" data-skill="all">All</span>
+                    <span class="skill-pill" data-skill="embedding">Embeddings</span>
+                    <span class="skill-pill" data-skill="vector">Vector Databases</span>
+                    <span class="skill-pill" data-skill="python">Python</span>
+                    <span class="skill-pill" data-skill="evaluation">Evaluation Frameworks</span>
+                    <span class="skill-pill" data-skill="llm">LLMs / PEFT</span>
+                </div>
+            </div>
+
+            <div class="candidates-grid" id="candidates-container">
+                <!-- Rendered dynamically -->
+            </div>
+        </div>
+
+        <!-- ==================== TAB: ARCHITECTURE ==================== -->
+        <div id="architecture-panel" class="tab-panel">
+            <div class="section-header">
+                <h1>Scoring Pipeline & Architecture</h1>
+                <p>Hybrid ranking fusing 5 distinct dimensions + keyword-inflation check.</p>
+            </div>
+
+            <div class="arch-grid">
+                <div>
+                    <div class="info-card">
+                        <h3>Scoring Weights Breakdown</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                            Each component score is normalized to [0, 1], aggregated according to weights, and then multiplied by the inflation penalty factor.
+                        </p>
+                        
+                        <div class="weight-bar-container">
+                            <div class="weight-row">
+                                <span class="weight-name">Semantic Similarity</span>
+                                <div class="weight-bar-bg"><div class="weight-bar-fill" style="width: 40%; background: var(--primary);"></div></div>
+                                <span class="weight-val">40%</span>
+                            </div>
+                            <div class="weight-row">
+                                <span class="weight-name">Skill Matching</span>
+                                <div class="weight-bar-bg"><div class="weight-bar-fill" style="width: 25%; background: var(--secondary);"></div></div>
+                                <span class="weight-val">25%</span>
+                            </div>
+                            <div class="weight-row">
+                                <span class="weight-name">Experience Signals</span>
+                                <div class="weight-bar-bg"><div class="weight-bar-fill" style="width: 18%; background: var(--accent-blue);"></div></div>
+                                <span class="weight-val">18%</span>
+                            </div>
+                            <div class="weight-row">
+                                <span class="weight-name">Availability Indicators</span>
+                                <div class="weight-bar-bg"><div class="weight-bar-fill" style="width: 12%; background: var(--accent-amber);"></div></div>
+                                <span class="weight-val">12%</span>
+                            </div>
+                            <div class="weight-row">
+                                <span class="weight-name">Profile Trust</span>
+                                <div class="weight-bar-bg"><div class="weight-bar-fill" style="width: 5%; background: var(--accent-green);"></div></div>
+                                <span class="weight-val">5%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Two-Stage Retrieval Framework</h3>
+                        <p style="font-size: 0.95rem; margin-bottom: 1rem;">
+                            To run the heavy Sentence Transformer models under the 5-minute CPU constraint, we implement a production-grade two-stage framework:
+                        </p>
+                        <div style="background: var(--bg-color); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 0.9rem;">
+                            <strong>Stage 1 (Retrieval):</strong> We parse all 100,000 candidates and perform a lightweight scoring pass on explicit features (skills, YOE, availability signals). We select the top 2,000 candidates.<br><br>
+                            <strong>Stage 2 (Re-ranking):</strong> We run our Sentence Transformer <code>multi-qa-mpnet-base-dot-v1</code> model only on the top 2,000 candidate narratives to re-rank and pick the final top 100.
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-card">
+                        <h3>Formula Specification</h3>
+                        <code style="display: block; background: #0f172a; color: #38bdf8; padding: 1rem; border-radius: 8px; font-size: 0.8rem; line-height: 1.5; font-family: monospace;">
+final_score = (<br>
+&nbsp;&nbsp;0.40 * semantic_sim +<br>
+&nbsp;&nbsp;0.25 * skill_match +<br>
+&nbsp;&nbsp;0.18 * experience_composite +<br>
+&nbsp;&nbsp;0.12 * availability +<br>
+&nbsp;&nbsp;0.05 * trust<br>
+) * inflation_multiplier
+                        </code>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Inflation Penalty</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">
+                            If a candidate lists skills but less than 30% of them appear in their actual career summaries/role histories, the algorithm applies a <strong>0.7× multiplier penalty</strong> to neutralize keyword stuffers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB: INSIGHTS ==================== -->
+        <div id="insights-panel" class="tab-panel">
+            <div class="section-header">
+                <h1>Dataset Insights & EDA</h1>
+                <p>Understanding the properties of the 100,000 candidate pool.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                <div class="info-card">
+                    <h3>Overall Pool Characteristics</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Value</th>
+                                <th>Implication</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mean experience</td>
+                                <td>7.1 years</td>
+                                <td>Matches target band (5-9 yrs)</td>
+                            </tr>
+                            <tr>
+                                <td>Top title prevalence</td>
+                                <td>HR Manager (300/5k)</td>
+                                <td>Severe title & keyword-stuffer trap</td>
+                            </tr>
+                            <tr>
+                                <td>Recruiter Response</td>
+                                <td>0.44 average</td>
+                                <td>Availability filter is highly active</td>
+                            </tr>
+                            <tr>
+                                <td>Open to work flag</td>
+                                <td>36.7%</td>
+                                <td>Most candidates are passive</td>
+                            </tr>
+                            <tr>
+                                <td>GitHub linked</td>
+                                <td>34.2%</td>
+                                <td>Minority have active public portfolios</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-card">
+                    <h3>Top Stuffed Skills Checked</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                        These skills appear frequently in skills lists but require verified history cross-checks:
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Skill Name</th>
+                                <th>Matches (per 5K)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sentence Transformers</td>
+                                <td>262</td>
+                            </tr>
+                            <tr>
+                                <td>Pinecone (Vector DB)</td>
+                                <td>252</td>
+                            </tr>
+                            <tr>
+                                <td>LangChain</td>
+                                <td>251</td>
+                            </tr>
+                            <tr>
+                                <td>RAG / Vector search</td>
+                                <td>250</td>
+                            </tr>
+                            <tr>
+                                <td>Fine-tuning LLMs</td>
+                                <td>241</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB: BLUEPRINT ==================== -->
+        <div id="blueprint-panel" class="tab-panel">
+            <div class="section-header">
+                <h1>Challenge Blueprint</h1>
+                <p>The job description details, requirements, and validation checklist.</p>
+            </div>
+
+            <div class="arch-grid">
+                <div>
+                    <div class="info-card">
+                        <h3>Job Description Requirements</h3>
+                        
+                        <div class="req-box">
+                            <h4>Hard Core Filters</h4>
+                            <p>5-9 years experience, Production embeddings-based retrieval systems (sentence-transformers, OpenAI embeddings, BGE, E5), Vector DBs (Pinecone, Weaviate, Qdrant, Milvus, Elasticsearch, FAISS), evaluation frameworks design (NDCG, MRR, MAP).</p>
+                        </div>
+                        
+                        <div class="req-box">
+                            <h4>Soft Requirements</h4>
+                            <p>LLM fine-tuning (LoRA, QLoRA, PEFT), Learning-to-rank models, distributed systems, HR-tech or marketplace product experience.</p>
+                        </div>
+
+                        <div class="req-box disqualifier">
+                            <h4>Disqualifiers & Red Flags</h4>
+                            <p>Pure research background with no shipping, LangChain-only hobby projects without pre-LLM ML depth, no production code in 18+ months, title chasers (switching companies every 1.5 yrs), only consulting firm experience.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-card">
+                        <h3>Evaluation Metrics</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                            NDCG@10 dominates the scoring at 50%:
+                        </p>
+                        <ul style="padding-left: 1.25rem; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-muted);">
+                            <li><strong>NDCG@10 (50%)</strong>: Heavy focus on the top 10 positions.</li>
+                            <li><strong>NDCG@50 (30%)</strong>: Mid-level ranking relevance.</li>
+                            <li><strong>MAP (15%)</strong>: Overall precision.</li>
+                            <li><strong>P@10 (5%)</strong>: Precision in top 10.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Validation Success Criteria</h3>
+                        <ul style="padding-left: 1.25rem; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-muted);">
+                            <li>✓ Exactly 100 data rows in CSV.</li>
+                            <li>✓ Monotonically decreasing scores.</li>
+                            <li>✓ Non-empty, highly specific reasoning strings.</li>
+                            <li>✓ Under 5-minute CPU runtime.</li>
+                            <li>✓ Honeypot count in top-100 is under 10%.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- PROFILE DETAIL DRAWER -->
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<div class="drawer" id="drawer">
+    <button class="drawer-close" id="drawer-close">&times;</button>
+    <div id="drawer-header" style="margin-bottom: 1.5rem;">
+        <!-- Rendered dynamically -->
+    </div>
+    
+    <div class="drawer-section">
+        <h4 class="drawer-sec-title">AI Matching Reasoning</h4>
+        <p id="drawer-reasoning" style="color: var(--primary); font-style: italic; background: var(--primary-light); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--primary); font-size: 0.85rem;"></p>
+    </div>
+
+    <div class="drawer-section">
+        <h4 class="drawer-sec-title">Summary</h4>
+        <p id="drawer-summary" style="font-size: 0.9rem; color: var(--text-main);"></p>
+    </div>
+
+    <div class="drawer-section">
+        <h4 class="drawer-sec-title">Behavioral & Redrob Signals</h4>
+        <div class="signals-grid" id="drawer-signals">
+            <!-- Rendered dynamically -->
+        </div>
+    </div>
+
+    <div class="drawer-section">
+        <h4 class="drawer-sec-title">Career History</h4>
+        <div class="timeline" id="drawer-experience">
+            <!-- Rendered dynamically -->
+        </div>
+    </div>
+
+    <div class="drawer-section">
+        <h4 class="drawer-sec-title">Education</h4>
+        <div class="timeline" id="drawer-education">
+            <!-- Rendered dynamically -->
+        </div>
+    </div>
+</div>
+
+<script src="profiles.js"></script>
+<script>
+    // Tab Switching Logic
+    function switchTab(tabId, el) {
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        el.classList.add('active');
+
+        document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+        document.getElementById(tabId + '-panel').classList.add('active');
+    }
+
+    // Global state
+    let filteredProfiles = [...candidateProfiles];
+    let selectedSkillFilter = 'all';
+
+    // Dom elements
+    const searchInput = document.getElementById('search-input');
+    const skillsPills = document.getElementById('skills-pills');
+    const container = document.getElementById('candidates-container');
+    
+    // Details drawer elements
+    const drawerOverlay = document.getElementById('drawer-overlay');
+    const drawer = document.getElementById('drawer');
+    const drawerClose = document.getElementById('drawer-close');
+    const drawerHeader = document.getElementById('drawer-header');
+    const drawerReasoning = document.getElementById('drawer-reasoning');
+    const drawerSummary = document.getElementById('drawer-summary');
+    const drawerSignals = document.getElementById('drawer-signals');
+    const drawerExperience = document.getElementById('drawer-experience');
+    const drawerEducation = document.getElementById('drawer-education');
+
+    // Calculate stats
+    function initStats() {
+        const totalYoE = candidateProfiles.reduce((acc, curr) => acc + curr.profile.years_of_experience, 0);
+        document.getElementById('avg-yoe').innerText = (totalYoE / candidateProfiles.length).toFixed(1) + ' yrs';
+
+        const totalResponse = candidateProfiles.reduce((acc, curr) => acc + curr.redrob_signals.recruiter_response_rate, 0);
+        document.getElementById('avg-response').innerText = ((totalResponse / candidateProfiles.length) * 100).toFixed(0) + '%';
+    }
+
+    // Render grid cards
+    function renderGrid() {
+        container.innerHTML = '';
+        if (filteredProfiles.length === 0) {
+            container.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted);">
+                    <p style="font-size: 1.2rem;">No candidates found matching the filters.</p>
+                </div>`;
+            return;
+        }
+
+        filteredProfiles.forEach(cand => {
+            const card = document.createElement('div');
+            card.className = 'cand-card';
+            card.onclick = () => openDrawer(cand);
+
+            const skillsStr = cand.skills.slice(0, 4).map(s => `<span class="skill-tag">${s.name}</span>`).join('');
+
+            card.innerHTML = `
+                <div>
+                    <div class="cand-header">
+                        <span class="rank-badge">Rank #${cand.rank}</span>
+                        <div class="score-circle">${(cand.score * 100).toFixed(0)}</div>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1.1rem; margin-bottom: 0.15rem;">${cand.profile.anonymized_name}</h3>
+                        <div class="cand-title">${cand.profile.current_title}</div>
+                        <div class="cand-meta">
+                            <span>💼 ${cand.profile.years_of_experience.toFixed(1)} YOE</span>
+                            <span>📍 ${cand.profile.location}</span>
+                        </div>
+                    </div>
+                    <div class="reasoning-box">${cand.reasoning}</div>
+                </div>
+                <div class="tag-row">${skillsStr}</div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // Filter Logic
+    function applyFilters() {
+        const query = searchInput.value.toLowerCase().trim();
+
+        filteredProfiles = candidateProfiles.filter(cand => {
+            // Search match
+            const searchMatch = !query || 
+                cand.profile.anonymized_name.toLowerCase().includes(query) ||
+                cand.profile.current_title.toLowerCase().includes(query) ||
+                (cand.profile.current_company && cand.profile.current_company.toLowerCase().includes(query)) ||
+                cand.skills.some(s => s.name.toLowerCase().includes(query));
+
+            // Skill pill match
+            let skillMatch = true;
+            if (selectedSkillFilter !== 'all') {
+                skillMatch = cand.skills.some(s => s.name.toLowerCase().includes(selectedSkillFilter));
+            }
+
+            return searchMatch && skillMatch;
+        });
+
+        renderGrid();
+    }
+
+    // Handle Quick filters
+    skillsPills.addEventListener('click', (e) => {
+        if (e.target.classList.contains('skill-pill')) {
+            document.querySelectorAll('.skill-pill').forEach(p => p.classList.remove('active'));
+            e.target.classList.add('active');
+            selectedSkillFilter = e.target.getAttribute('data-skill');
+            applyFilters();
+        }
+    });
+
+    searchInput.addEventListener('input', applyFilters);
+
+    // Details Drawer Opening
+    function openDrawer(cand) {
+        // Header
+        drawerHeader.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                <span class="rank-badge">Rank #${cand.rank}</span>
+                <span style="font-family: 'Outfit'; font-weight: 700; color: var(--primary); font-size: 1rem; background: var(--primary-light); padding: 0.2rem 0.6rem; border-radius: 6px;">Score: ${(cand.score * 100).toFixed(1)}%</span>
+            </div>
+            <h2 style="font-size: 1.5rem; margin-bottom: 0.15rem;">${cand.profile.anonymized_name}</h2>
+            <div style="color: var(--primary); font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem;">${cand.profile.current_title} at ${cand.profile.current_company || 'Undisclosed'}</div>
+            <div class="cand-meta">
+                <span>📍 ${cand.profile.location}, ${cand.profile.country}</span>
+                <span>•</span>
+                <span>💼 ${cand.profile.years_of_experience} YOE</span>
+            </div>
+        `;
+
+        // Reasoning & Summary
+        drawerReasoning.innerText = cand.reasoning;
+        drawerSummary.innerText = cand.profile.summary || "No professional summary provided.";
+
+        // Redrob Signals
+        const signals = cand.redrob_signals;
+        const emailVerified = signals.verified_email ? 
+            `<span style="color: var(--accent-green);">✓ Verified</span>` : 
+            `<span style="color: var(--accent-red);">Not Verified</span>`;
+        const phoneVerified = signals.verified_phone ? 
+            `<span style="color: var(--accent-green);">✓ Verified</span>` : 
+            `<span style="color: var(--accent-red);">Not Verified</span>`;
+        const openToWork = signals.open_to_work_flag ? 
+            `<span style="color: var(--accent-green); font-weight: 600;">Yes</span>` : 
+            `<span style="color: var(--text-muted);">No</span>`;
+
+        drawerSignals.innerHTML = `
+            <div class="signal-box">
+                <span class="signal-lbl">Profile Completeness</span>
+                <span class="signal-val">${signals.profile_completeness_score}%</span>
+            </div>
+            <div class="signal-box">
+                <span class="signal-lbl">Recruiter Response Rate</span>
+                <span class="signal-val">${(signals.recruiter_response_rate * 100).toFixed(0)}%</span>
+            </div>
+            <div class="signal-box">
+                <span class="signal-lbl">Last Active Date</span>
+                <span class="signal-val">${signals.last_active_date}</span>
+            </div>
+            <div class="signal-box">
+                <span class="signal-lbl">Notice Period</span>
+                <span class="signal-val">${signals.notice_period_days} Days</span>
+            </div>
+            <div class="signal-box">
+                <span class="signal-lbl">Open to Work</span>
+                <span class="signal-val">${openToWork}</span>
+            </div>
+            <div class="signal-box">
+                <span class="signal-lbl">GitHub Activity Score</span>
+                <span class="signal-val">${signals.github_activity_score || 'N/A'}</span>
+            </div>
+            <div class="signal-box">
+                <span class="signal-lbl">Email Status</span>
+                <span class="signal-val">${emailVerified}</span>
+            </div>
+            <div class="signal-box">
+                <span class="signal-lbl">Phone Status</span>
+                <span class="signal-val">${phoneVerified}</span>
+            </div>
+        `;
+
+        // Experience History
+        drawerExperience.innerHTML = cand.career_history.map(job => `
+            <div class="timeline-item">
+                <div class="timeline-header">
+                    <span>${job.company}</span>
+                    <span style="color: var(--text-muted); font-weight: normal; font-size: 0.75rem;">${job.start_date} to ${job.is_current ? 'Present' : job.end_date}</span>
+                </div>
+                <div class="timeline-title">${job.title}</div>
+                <p class="timeline-desc">${job.description || "No description provided."}</p>
+            </div>
+        `).join('');
+
+        // Education History
+        drawerEducation.innerHTML = cand.education.map(edu => `
+            <div class="timeline-item">
+                <div class="timeline-header">
+                    <span>${edu.institution}</span>
+                    <span style="color: var(--text-muted); font-weight: normal; font-size: 0.75rem;">${edu.start_year} - ${edu.end_year || 'N/A'}</span>
+                </div>
+                <div class="timeline-title">${edu.degree} in ${edu.field_of_study}</div>
+                <p class="timeline-desc">Grade: ${edu.grade || 'N/A'} | Tier: ${edu.tier || 'N/A'}</p>
+            </div>
+        `).join('');
+
+        // Show drawer
+        drawerOverlay.classList.add('active');
+        drawer.classList.add('active');
+    }
+
+    // Close drawer logic
+    function closeDrawer() {
+        drawerOverlay.classList.remove('active');
+        drawer.classList.remove('active');
+    }
+
+    drawerClose.onclick = closeDrawer;
+    drawerOverlay.onclick = closeDrawer;
+
+    // Esc key close drawer
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeDrawer();
+    });
+
+    // Sandbox Evaluation Logic
+    function evaluateSandboxCandidate() {
+        const name = document.getElementById('sandbox-name').value;
+        const title = document.getElementById('sandbox-title').value.toLowerCase();
+        const yoe = parseFloat(document.getElementById('sandbox-yoe').value) || 0;
+        const notice = parseInt(document.getElementById('sandbox-notice').value) || 0;
+        const skillsText = document.getElementById('sandbox-skills').value.toLowerCase();
+        const summary = document.getElementById('sandbox-summary').value.toLowerCase();
+        const responseRate = (parseFloat(document.getElementById('sandbox-response').value) || 0) / 100.0;
+        const activeDays = parseInt(document.getElementById('sandbox-active').value) || 0;
+
+        // 1. Skill Match Score (25% weight)
+        const skillsList = skillsText.split(',').map(s => s.trim()).filter(Boolean);
+        const hardReqs = {
+            embeddings: ['embedding', 'sentence transformers', 'bge', 'e5', 'minilm'],
+            vector_db: ['pinecone', 'weaviate', 'qdrant', 'milvus', 'opensearch', 'elasticsearch', 'faiss'],
+            ranking: ['ranking', 'retrieve', 'retrieval', 'search', 'ir', 'information retrieval', 'rerank'],
+            evaluation: ['ndcg', 'mrr', 'map', 'precision', 'recall', 'a/b test', 'offline evaluation'],
+            python: ['python'],
+            llm: ['llm', 'gpt', 'claude', 'transformers', 'fine-tuning', 'fine-tune', 'lora', 'peft']
+        };
+        
+        let reqScores = {};
+        for (const [key, keywords] of Object.entries(hardReqs)) {
+            let found = false;
+            for (const kw of keywords) {
+                if (skillsList.some(s => s.includes(kw)) || summary.includes(kw)) {
+                    found = true;
+                    break;
+                }
+            }
+            reqScores[key] = found ? 1.0 : 0.0;
+        }
+        
+        const skillWeights = {
+            embeddings: 0.25,
+            vector_db: 0.25,
+            ranking: 0.15,
+            evaluation: 0.20,
+            python: 0.10,
+            llm: 0.05
+        };
+        
+        let skillMatchScore = 0;
+        for (const key in hardReqs) {
+            skillMatchScore += reqScores[key] * skillWeights[key];
+        }
+
+        // 2. Experience Score (18% weight: YOE, title progress, company type)
+        let yoeScore = 0.2;
+        if (yoe >= 5 && yoe <= 9) yoeScore = 1.0;
+        else if (yoe >= 4 && yoe < 5) yoeScore = 0.9;
+        else if (yoe > 9 && yoe <= 10) yoeScore = 0.9;
+        else if (yoe > 10 && yoe <= 12) yoeScore = 0.7;
+        else if (yoe > 12) yoeScore = 0.5;
+        else if (yoe >= 3 && yoe < 4) yoeScore = 0.6;
+        
+        let titleSignal = 0.5;
+        const prodKeywords = ['engineer', 'developer', 'architect', 'tech lead', 'senior', 'ml', 'ai'];
+        const researchKeywords = ['researcher', 'scientist', 'academic', 'phd', 'post-doc'];
+        if (prodKeywords.some(k => title.includes(k))) titleSignal = 1.0;
+        else if (researchKeywords.some(k => title.includes(k))) titleSignal = 0.2;
+        
+        const expCompositeScore = (yoeScore * 0.5) + (titleSignal * 0.5);
+
+        // 3. Availability Score (12% weight)
+        let responseScore = 0.1;
+        if (responseRate >= 0.7) responseScore = 1.0;
+        else if (responseRate >= 0.5) responseScore = 0.9;
+        else if (responseRate >= 0.3) responseScore = 0.7;
+        else if (responseRate >= 0.1) responseScore = 0.4;
+        
+        let recencyScore = 0.2;
+        if (activeDays <= 7) recencyScore = 1.0;
+        else if (activeDays <= 30) recencyScore = 0.95;
+        else if (activeDays <= 90) recencyScore = 0.85;
+        else if (activeDays <= 180) recencyScore = 0.6;
+        
+        let noticeScore = 0.5;
+        if (notice < 30) noticeScore = 1.0;
+        else if (notice <= 60) noticeScore = 0.95;
+        else if (notice <= 90) noticeScore = 0.85;
+        else if (notice <= 120) noticeScore = 0.7;
+        
+        const availabilityScore = (responseScore * 0.4) + (recencyScore * 0.3) + (noticeScore * 0.3);
+
+        // 4. Semantic Similarity (Approximate via concept matching)
+        const jdConcepts = [
+            'embeddings-based retrieval', 'sentence-transformers', 'openai embeddings', 'bge', 'e5',
+            'vector databases', 'pinecone', 'weaviate', 'qdrant', 'milvus', 'opensearch', 'elasticsearch', 'faiss',
+            'evaluation frameworks', 'ndcg', 'mrr', 'map', 'fine-tuning', 'lora', 'qlora', 'peft'
+        ];
+        let matchedConcepts = 0;
+        for (const c of jdConcepts) {
+            if (summary.includes(c) || title.includes(c) || skillsText.includes(c)) {
+                matchedConcepts++;
+            }
+        }
+        let semanticScore = 0.3 + (matchedConcepts / jdConcepts.length) * 0.7;
+        if (title.includes('ai') || title.includes('ml') || title.includes('retrieval') || title.includes('search')) {
+            semanticScore = Math.min(semanticScore + 0.15, 1.0);
+        }
+        
+        // 5. Trust (5% weight)
+        const trustScore = 0.85; // Baseline trust
+
+        // 6. Inflation Multiplier (Checks if skills list matches summary keywords)
+        let inflationMult = 1.0;
+        let usedSkills = 0;
+        for (const skill of skillsList) {
+            if (summary.includes(skill)) usedSkills++;
+        }
+        if (skillsList.length > 3) {
+            const usageRatio = usedSkills / skillsList.length;
+            if (usageRatio < 0.3) inflationMult = 0.7;
+        }
+
+        // 7. Combined Final Score
+        const finalScore = (
+            (0.40 * semanticScore) +
+            (0.25 * skillMatchScore) +
+            (0.18 * expCompositeScore) +
+            (0.12 * availabilityScore) +
+            (0.05 * trustScore)
+        ) * inflationMult;
+
+        const finalPct = Math.round(finalScore * 100);
+
+        // Update UI elements
+        document.getElementById('sandbox-score-circle').innerText = finalPct + '%';
+        document.getElementById('sandbox-score-circle').style.borderColor = (finalScore >= 0.65) ? 'var(--accent-green)' : 'var(--accent-red)';
+        
+        // Update progress bars
+        document.getElementById('sandbox-bar-semantic').style.width = Math.round(semanticScore * 100) + '%';
+        document.getElementById('sandbox-val-semantic').innerText = Math.round(semanticScore * 100) + '%';
+        
+        document.getElementById('sandbox-bar-skill').style.width = Math.round(skillMatchScore * 100) + '%';
+        document.getElementById('sandbox-val-skill').innerText = Math.round(skillMatchScore * 100) + '%';
+        
+        document.getElementById('sandbox-bar-exp').style.width = Math.round(expCompositeScore * 100) + '%';
+        document.getElementById('sandbox-val-exp').innerText = Math.round(expCompositeScore * 100) + '%';
+        
+        document.getElementById('sandbox-bar-avail').style.width = Math.round(availabilityScore * 100) + '%';
+        document.getElementById('sandbox-val-avail').innerText = Math.round(availabilityScore * 100) + '%';
+
+        // Set Verdict and Feedback
+        let verdict = 'Tier 5: Poor Match';
+        let color = 'var(--accent-red)';
+        let feedback = '';
+
+        if (finalScore >= 0.76) {
+            verdict = 'Tier 1: Excellent Fit';
+            color = 'var(--accent-green)';
+            feedback = `Excellent candidate. Strong alignment with both core skills and experience bands. They possess active platform signals with high responsiveness. Primary recommendation.`;
+        } else if (finalScore >= 0.63) {
+            verdict = 'Tier 2: Strong Adjacent Fit';
+            color = 'var(--accent-blue)';
+            feedback = `Strong candidate. Meets the majority of hard technical requirements. Experience and current profile indicates production capabilities, although they might lack a few secondary skills or have minor notice period delays.`;
+        } else if (finalScore >= 0.48) {
+            verdict = 'Tier 3: Moderate Fit';
+            color = 'var(--accent-amber)';
+            feedback = `Moderate match. Possesses basic Python skills and some adjacent data or ML experience, but lacks the core production depth in either Vector databases or Search Evaluation (NDCG/MRR/MAP).`;
+        } else {
+            feedback = `Poor fit. Either does not match the target years of experience, lacks essential search and retrieval skills, or shows high risk of keyword stuffing (skills listed but not present in career description/summary).`;
+        }
+
+        if (inflationMult < 1.0) {
+            verdict += ' (Stuffer Trap)';
+            color = 'var(--accent-red)';
+            feedback += ` Warning: Keyword Stuffing detected. Listed skills do not correlate with their career description, indicating low actual production exposure.`;
+        }
+
+        document.getElementById('sandbox-verdict').innerText = verdict;
+        document.getElementById('sandbox-verdict').style.color = color;
+        document.getElementById('sandbox-feedback').innerText = feedback;
+    }
+
+    // Initialize Page
+    initStats();
+    renderGrid();
+    evaluateSandboxCandidate(); // Run initial sandbox calculation
+</script>
+</body>
+</html>
